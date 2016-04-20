@@ -32,7 +32,7 @@ Whatever that path is, it should contain an index.html file that nginx will serv
 e.g. /home/user/github/webapp/build
 OR   /Users/username/github/projectone/build
 
-Then use the following cammond to start a docker image that runs nginx and uses this path to serve pages.
+Then use the following command to start a docker image that runs nginx and uses this path to serve pages.
 
 ```
 ./nginx/prepare.sh run PATH/TO/YOUR/WEBAPP/ROOT
