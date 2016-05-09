@@ -1,0 +1,7 @@
+#!/bin/sh
+
+cd /opt/app/api
+mix deps.get
+mix phoenix.server
+
+/bin/sh

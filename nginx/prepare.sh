@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REQUIREMENT="docker"
-PACKAGE="coherent/nginx"
+PACKAGE="nginx"
 VER="1.0.0"
 IMAGENAME="nginx"
 APP_PATH="$(cd "$(dirname "$2")/$(basename "$2")" && pwd -P)"
@@ -35,7 +35,7 @@ if [[ $? == 0 && $1 == "run" ]]; then
   fi
   sleep 2
   docker rm -f $IMAGENAME 2>&1 >/dev/null
-  docker run --name $IMAGENAME -p 80:80 -d -v $APP_PATH:/usr/share/nginx/html nginx
+  docker run  --restart=always --name $IMAGENAME -p 80:80 -d -v $APP_PATH:/usr/share/nginx/html nginx
   echo "";
   docker ps -a 2>&1
   echo "";
