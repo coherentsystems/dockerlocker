@@ -18,9 +18,9 @@ endif
 ifndef GCCLUS
 	$(error ENV var GCCLUS is undefined, use `export GCCLUS=$${Google Compute Cluster Name}` to fix)
 endif
-ifndef GCSERV
-	$(error ENV var GCSERV is undefined, use `export GCSERV=$${Google Compute Service Name}` to fix)
-endif
+# ifndef GCSERV
+# 	$(error ENV var GCSERV is undefined, use `export GCSERV=$${Google Compute Service Name}` to fix)
+# endif
 
 help:
 	@echo ""

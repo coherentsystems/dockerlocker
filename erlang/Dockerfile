@@ -10,6 +10,8 @@ ENV REFRESHED_AT=2016-04-09 \
 RUN \
     apk -U upgrade && \
     apk -U add ca-certificates && \
+    apk -U add ncurses && \
+    apk -U add bash && \
     update-ca-certificates
 
 RUN \
@@ -21,12 +23,12 @@ RUN \
 
 # Install Erlang
 RUN \
-    apk-install \
+    apk-install -U \
         erlang erlang-dev erlang-kernel erlang-hipe erlang-compiler \
         erlang-stdlib erlang-erts erlang-syntax-tools erlang-sasl \
         erlang-crypto erlang-public-key erlang-ssl erlang-tools \
-        erlang-inets erlang-mnesia erlang-odbc erlang-xmerl erlang-runtime-tools \
-        erlang-erl-interface erlang-parsetools
+        erlang-inets erlang-xmerl erlang-runtime-tools \
+        erlang-erl-interface erlang-parsetools erlang-asn1
 
 WORKDIR ${HOME}
 

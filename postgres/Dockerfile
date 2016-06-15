@@ -14,14 +14,10 @@ ENV LANG en_US.utf8
 ENV PG_MAJOR 9.5
 ENV PG_VERSION 9.5.2-1.pgdg80+1
 ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
-ENV PGDATA /var/lib/postgresql/data
-
 
 # explicitly set user/group IDs
 RUN mkdir /docker-entrypoint-initdb.d
 RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
-
-VOLUME /var/lib/postgresql/data
 
 COPY docker-entrypoint.sh /
 RUN chmod 755 /docker-entrypoint.sh

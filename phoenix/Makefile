@@ -42,7 +42,7 @@ dev: build ## Run the Docker image in DEV mode
 	docker run --rm -it -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -v "$(API_PATH):/opt/app/api:rw" --link postgres:postgres -p $(PORT):$(PORT) $(IMAGE_NAME):$(VERSION)
 
 explore: build ## Run the Docker image in exploration mode
-	docker run --rm -it -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -v "$(API_PATH):/opt/app/api:rw" --link postgres:postgres -p 9999:9999 -p $(PORT):$(PORT) --entrypoint "/bin/sh" $(IMAGE_NAME):$(VERSION)
+	docker run --rm -it -e POSTGRES_PASSWORD=$(POSTGRES_PASSWORD) -v "$(API_PATH):/opt/app/api:rw" --link postgres:postgres -p $(PORT):$(PORT) --entrypoint "/bin/sh" $(IMAGE_NAME):$(VERSION)
 
 gccreds: check-env ## Get Google Container Credentials
 	gcloud container clusters get-credentials $(GCC_NAME)

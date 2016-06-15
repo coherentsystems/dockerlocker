@@ -1,12 +1,10 @@
 .PHONY: help check-env
 
 VERSION ?= `cat VERSION`
-IMAGE_TEST ?= appx
+IMAGE_TEST ?= xapi
 IMAGE_NAME ?= $(GCORG)/$(IMAGE_TEST)
 GCP_NAME ?= $(GCPROJ)
 GCC_NAME ?= $(GCCLUS)
-APP_BNDL ?= $(APP_BUNDLE)
-APP_STRT ?= $(APP_STARTUP)
 GCS_CONTAINER ?= gcr.io/$(GCPROJ)/$(IMAGE_TEST):$(VERSION)
 PORT ?= 9999
 
@@ -20,12 +18,6 @@ endif
 ifndef GCCLUS
 	$(error ENV var GCCLUS is undefined, use `export GCCLUS=$${Google Compute Cluster Name}` to fix)
 endif
-ifndef APP_BUNDLE
-	$(error ENV var APP_BUNDLE is undefined, use `export APP_BUNDLE=$${Bundle File Name with NO PATHS}` to fix. File must be in the same path as this Makefile and should be in .tar.gz format)
-endif
-#ifndef APP_STARTUP
-#	$(error ENV var APP_STARTUP is undefined, use `export APP_STARTUP=$${Start script File Name with NO PATHS}` to fix. File must be in the same path as this Makefile and should be in .sh format)
-#endif
 
 help:
 	@echo ""
@@ -40,23 +32,12 @@ help:
 	@echo ""
 	@perl -nle'print $& if m{^[a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
-build: check-env ## Rebuild the Docker image (requires APP_BUNDLE ENV var to indicate filename of APP.tar.gz with NO PATHS )
-	docker build --force-rm --build-arg APP_TARGZ=$(APP_BNDL) -t $(IMAGE_NAME):$(VERSION) -t $(IMAGE_NAME):latest .
-
-test: check-env build ## Test the Docker image
-	docker run --rm -it $(IMAGE_NAME):$(VERSION) && tail -f /dev/null
-
-dev: check-env build ## Run the Docker image in DEV mode
-	docker run --rm -it -p $(PORT):$(PORT) -e PORT=$(PORT)  $(IMAGE_NAME):$(VERSION)
-
-explore: check-env build ## Run the Docker image in exploration mode
-	docker run --rm -it -p $(PORT):$(PORT) -e PORT=$(PORT) --entrypoint "/bin/sh" $(IMAGE_NAME):$(VERSION)
 
 gccreds: check-env ## Get Google Container Credentials
 	gcloud container clusters get-credentials $(GCC_NAME)
 
-gcitag: check-env build ## Tag the docker image in preparation for a push to gcloud
+gcitag: check-env ## Tag the docker image in preparation for a push to gcloud
 	docker tag $(IMAGE_NAME):$(VERSION) $(GCS_CONTAINER)
 
-gcpush: check-env gcitag ## Push image to gcloud
+gcpush: check-env  ## Push image to gcloud
 	gcloud docker -- push $(GCS_CONTAINER)
